@@ -1,4 +1,9 @@
-﻿namespace Maplewing.LeapBound.Engine
+﻿using System;
+using System.Linq;
+using LaYumba.Functional;
+using Maplewing.LeapBound.Engine.Data;
+
+namespace Maplewing.LeapBound.Engine
 {
     public class GamePlayEngine
     {
@@ -6,17 +11,27 @@
         {
             public Player Player;
             public long Money;
+            public IItem[] Items;
         }
 
-        public State CurrentState;
+        private const float FIRST_ITEM_DISTANCE = 10f;
+
+        public State CurrentState { get; private set; }
+
+        private ItemManager _itemManager;
 
         public GamePlayEngine(State state)
-            => CurrentState = state;
+        {
+            CurrentState = state;
+            _itemManager = new ItemManager(state.Player.Position.X + FIRST_ITEM_DISTANCE);
+        }
 
         public State Update(float deltaTime)
-            => CurrentState = new State
-            {
-                Player = CurrentState.Player.Move(deltaTime)
-            };
+        {
+            CurrentState = _itemManager.UpdateState(CurrentState);
+            return CurrentState = CurrentState.With(
+                state => state.Player,
+                CurrentState.Player.Move(deltaTime));
+        }
     }
 }

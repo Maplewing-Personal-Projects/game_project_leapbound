@@ -6,7 +6,10 @@ namespace Maplewing.LeapBound.Engine
     {
         private static Random _random = new Random();
 
-        public static int Get(int minValue, int maxValue)
-            => _random.Next(minValue, maxValue); 
+        public static int GetInt(int minValue, int maxValue)
+            => _random.Next(minValue, maxValue);
+
+        public static bool GetBool()
+            => _random.Next() % 2 == 0;
     }
 }

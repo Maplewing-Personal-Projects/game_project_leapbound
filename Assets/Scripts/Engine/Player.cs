@@ -4,7 +4,7 @@ namespace Maplewing.LeapBound.Engine
 {
     public class Player
     {
-        private const float X_MOVE_SPEED = 1f;
+        private const float X_MOVE_SPEED = 10f;
 
         public Vector2D Position { get; private set; }
         
