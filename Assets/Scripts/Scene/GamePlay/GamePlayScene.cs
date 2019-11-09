@@ -14,22 +14,25 @@ namespace Maplewing.LeapBound.Unity.GamePlay
 
         private void Start()
         {
-            _gamePlayEngine = new GamePlayEngine(new Player(Vector2D.ZERO));
+            _gamePlayEngine = new GamePlayEngine(new GamePlayEngine.State{
+                Player = new Player(Vector2D.ZERO),
+                Money = 0
+            });
         }
 
         private void Update()
         {
-            _gamePlayEngine = _gamePlayEngine.Update(Time.deltaTime);
+            var state = _gamePlayEngine.Update(Time.deltaTime);
 
-            _UpdateViews(_gamePlayEngine);
+            _UpdateViews(state);
         }
 
-        private void _UpdateViews(GamePlayEngine gamePlayEngine)
+        private void _UpdateViews(GamePlayEngine.State state)
         {
             if (_cameraTransform != null) _cameraTransform.localPosition =
-                    _gamePlayEngine.Player.Position.ToVector2().WithZ(_cameraTransform.localPosition.z);
+                    state.Player.Position.ToVector2().WithZ(_cameraTransform.localPosition.z);
 
-            if (_playerTransform != null) _playerTransform.localPosition = _gamePlayEngine.Player.Position.ToVector3();
+            if (_playerTransform != null) _playerTransform.localPosition = state.Player.Position.ToVector3();
         }
     }
 }
