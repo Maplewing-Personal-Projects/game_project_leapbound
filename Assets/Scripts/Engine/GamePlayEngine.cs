@@ -1,15 +1,22 @@
-﻿using Maplewing.LeapBound.Engine.Data;
-
-namespace Maplewing.LeapBound.Engine
+﻿namespace Maplewing.LeapBound.Engine
 {
     public class GamePlayEngine
     {
-        public Player Player { get; private set; }
+        public class State
+        {
+            public Player Player;
+            public long Money;
+        }
 
-        public GamePlayEngine(Player player)
-            => Player = player;
+        public State CurrentState;
 
-        public GamePlayEngine Update(float deltaTime)
-            => new GamePlayEngine(Player.Move(deltaTime));
+        public GamePlayEngine(State state)
+            => CurrentState = state;
+
+        public State Update(float deltaTime)
+            => CurrentState = new State
+            {
+                Player = CurrentState.Player.Move(deltaTime)
+            };
     }
 }
