@@ -9,8 +9,6 @@ namespace Maplewing.LeapBound.Unity.GamePlay
 {
     public class GamePlayScene : MonoBehaviour
     {
-        [SerializeField] private Transform _cameraTransform = null;
-        [SerializeField] private Transform _playerTransform = null;
         [SerializeField] private Text _moneyText = null;
         [SerializeField] private ItemViewController _itemViewController = null;
         [SerializeField] private Transform _groundTransform = null;
@@ -43,12 +41,12 @@ namespace Maplewing.LeapBound.Unity.GamePlay
                 {
                     PrefabName = item.Id,
                     AreaRange = new Rectangle(
-                        item.AreaRange.Position - state.Player.Position,
+                        item.AreaRange.Position - state.Player.AreaRange.Position,
                         item.AreaRange.Size).ToRect()
                 }).ToArray());
 
             if (_groundTransform != null)
-                _groundTransform.localPosition = new Vector3(0, -0.55f - state.Player.Position.Y, 0);
+                _groundTransform.localPosition = new Vector3(0, -0.55f - state.Player.AreaRange.Position.Y, 0);
         }
 
         private void _UpdateInputState()

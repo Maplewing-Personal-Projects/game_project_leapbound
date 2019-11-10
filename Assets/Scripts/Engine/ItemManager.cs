@@ -10,6 +10,8 @@ namespace Maplewing.LeapBound.Engine
     {
         private const float ITEM_DISTANCE = 10f;
         private const float ITEM_DISAPPEAR_DISTANCE = 100f;
+        private const float MIN_ITEM_Y = 0f;
+        private const float MAX_ITEM_Y = 2f;
         private float _initialItemPositionX;
         private int _currentUpdatedItemIndex = 0;
 
@@ -23,11 +25,11 @@ namespace Maplewing.LeapBound.Engine
             var remainItems = new List<IItem>();
             foreach (var item in items)
             {
-                if (item.AreaRange.IsPointIn(state.Player.Position))
+                if (item.AreaRange.IsIntersect(state.Player.AreaRange))
                 {
                     state = item.Get(state);
                 }
-                else if(item.AreaRange.Position.X > currentState.Player.Position.X - ITEM_DISAPPEAR_DISTANCE)
+                else if(item.AreaRange.Position.X > currentState.Player.AreaRange.Position.X - ITEM_DISAPPEAR_DISTANCE)
                 {
                     remainItems.Add(item);
                 }
@@ -41,7 +43,7 @@ namespace Maplewing.LeapBound.Engine
         }
 
         private GamePlayEngine.State _ProcessGeneratingItems(GamePlayEngine.State currentState)
-            => currentState.Player.Position.X > _initialItemPositionX + _currentUpdatedItemIndex * (ITEM_DISTANCE - 1) ?
+            => currentState.Player.AreaRange.Position.X > _initialItemPositionX + _currentUpdatedItemIndex * (ITEM_DISTANCE - 1) ?
                     _UpdateCurrentUpdatedItemPositionX(_DecideWhetherGeneratingItems(currentState)) :
                     currentState;
 
@@ -61,7 +63,7 @@ namespace Maplewing.LeapBound.Engine
         }
 
         private IItem _GenerateItem(float currentItemDistance)
-            => new CoinItem(new Vector2D(currentItemDistance + ITEM_DISTANCE, 0));
+            => new CoinItem(new Vector2D(currentItemDistance + ITEM_DISTANCE, RandomValue.GetFloat(MIN_ITEM_Y, MAX_ITEM_Y)));
 
     }
 

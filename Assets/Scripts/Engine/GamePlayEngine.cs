@@ -23,7 +23,7 @@ namespace Maplewing.LeapBound.Engine
         public GamePlayEngine(State state)
         {
             CurrentState = state;
-            _itemManager = new ItemManager(state.Player.Position.X + FIRST_ITEM_DISTANCE);
+            _itemManager = new ItemManager(state.Player.AreaRange.Position.X + FIRST_ITEM_DISTANCE);
         }
 
         public State Update(float deltaTime)
