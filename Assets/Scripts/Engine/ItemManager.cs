@@ -9,6 +9,7 @@ namespace Maplewing.LeapBound.Engine
     public class ItemManager
     {
         private const float ITEM_DISTANCE = 10f;
+        private const float ITEM_DISAPPEAR_DISTANCE = 100f;
         private float _initialItemPositionX;
         private int _currentUpdatedItemIndex = 0;
 
@@ -26,7 +27,7 @@ namespace Maplewing.LeapBound.Engine
                 {
                     state = item.Get(state);
                 }
-                else
+                else if(item.AreaRange.Position.X > currentState.Player.Position.X - ITEM_DISAPPEAR_DISTANCE)
                 {
                     remainItems.Add(item);
                 }

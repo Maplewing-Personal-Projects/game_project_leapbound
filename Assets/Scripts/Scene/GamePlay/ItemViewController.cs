@@ -8,6 +8,12 @@ namespace Maplewing.LeapBound.Unity.GamePlay
     [RequireComponent(typeof(Transform))]
     public class ItemViewController : MonoBehaviour
     {
+        public class ViewData
+        {
+            public string PrefabName;
+            public Rect AreaRange;
+        }
+
         [SerializeField] private GameObject _coinPrefab = null;
         private Transform _itemRoot = null;
 
@@ -23,7 +29,7 @@ namespace Maplewing.LeapBound.Unity.GamePlay
             _coinGameObjects = new GameObject[0];
         }
 
-        public void SetItems(IItem[] items)
+        public void SetItems(ViewData[] items)
         {
             int diff = items.Length - _coinGameObjects.Length;
             if (diff > 0)
@@ -43,8 +49,8 @@ namespace Maplewing.LeapBound.Unity.GamePlay
             _coinGameObjects = _coinGameObjects.Zip(items,
                 (gameObject, item) =>
                 {
-                    gameObject.transform.localPosition = item.AreaRange.Position.ToVector3();
-                    gameObject.transform.localScale = item.AreaRange.Size.ToVector3();
+                    gameObject.transform.localPosition = item.AreaRange.center;
+                    gameObject.transform.localScale = item.AreaRange.size;
                     return gameObject;
                 }).ToArray();
         }

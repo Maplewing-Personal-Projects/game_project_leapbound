@@ -1,6 +1,7 @@
 ﻿using Maplewing.LeapBound.Engine;
 using Maplewing.LeapBound.Engine.Data;
 using Maplewing.LeapBound.Engine.Unity;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,14 +34,22 @@ namespace Maplewing.LeapBound.Unity.GamePlay
 
         private void _UpdateViews(GamePlayEngine.State state)
         {
-            if (_cameraTransform != null) _cameraTransform.localPosition =
+            /*if (_cameraTransform != null) _cameraTransform.localPosition =
                     state.Player.Position.ToVector2().WithZ(_cameraTransform.localPosition.z);
 
             if (_playerTransform != null) _playerTransform.localPosition = state.Player.Position.ToVector3();
+            */
 
             if (_moneyText != null) _moneyText.text = state.Money.ToString();
 
-            if (_itemViewController != null) _itemViewController.SetItems(state.Items);
+            if (_itemViewController != null) _itemViewController.SetItems(state.Items.Select(item =>
+                new ItemViewController.ViewData
+                {
+                    PrefabName = item.Id,
+                    AreaRange = new Rectangle(
+                        item.AreaRange.Position - state.Player.Position,
+                        item.AreaRange.Size).ToRect()
+                }).ToArray());
         }
     }
 }
