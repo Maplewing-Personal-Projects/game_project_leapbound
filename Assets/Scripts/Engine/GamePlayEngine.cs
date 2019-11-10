@@ -33,5 +33,8 @@ namespace Maplewing.LeapBound.Engine
                 state => state.Player,
                 CurrentState.Player.Move(deltaTime));
         }
+
+        public State ExecuteCommand(ICommand command)
+            => CurrentState = command.Execute(CurrentState);
     }
 }

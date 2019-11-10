@@ -13,6 +13,7 @@ namespace Maplewing.LeapBound.Unity.GamePlay
         [SerializeField] private Transform _playerTransform = null;
         [SerializeField] private Text _moneyText = null;
         [SerializeField] private ItemViewController _itemViewController = null;
+        [SerializeField] private Transform _groundTransform = null;
 
         private GamePlayEngine _gamePlayEngine;
 
@@ -30,16 +31,11 @@ namespace Maplewing.LeapBound.Unity.GamePlay
             var state = _gamePlayEngine.Update(Time.deltaTime);
 
             _UpdateViews(state);
+            _UpdateInputState();
         }
 
         private void _UpdateViews(GamePlayEngine.State state)
         {
-            /*if (_cameraTransform != null) _cameraTransform.localPosition =
-                    state.Player.Position.ToVector2().WithZ(_cameraTransform.localPosition.z);
-
-            if (_playerTransform != null) _playerTransform.localPosition = state.Player.Position.ToVector3();
-            */
-
             if (_moneyText != null) _moneyText.text = state.Money.ToString();
 
             if (_itemViewController != null) _itemViewController.SetItems(state.Items.Select(item =>
@@ -50,6 +46,15 @@ namespace Maplewing.LeapBound.Unity.GamePlay
                         item.AreaRange.Position - state.Player.Position,
                         item.AreaRange.Size).ToRect()
                 }).ToArray());
+
+            if (_groundTransform != null)
+                _groundTransform.localPosition = new Vector3(0, -0.55f - state.Player.Position.Y, 0);
+        }
+
+        private void _UpdateInputState()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+                _gamePlayEngine.ExecuteCommand(new PlayerJumpCommand());
         }
     }
 }

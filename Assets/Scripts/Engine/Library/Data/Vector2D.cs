@@ -7,7 +7,7 @@
         public float X;
         public float Y;
 
-        public Vector2D(float x, float y)
+        public Vector2D(float x = 0, float y = 0)
         {
             X = x;
             Y = y;
@@ -18,6 +18,9 @@
 
         public static Vector2D operator -(Vector2D a, Vector2D b)
             => new Vector2D(a.X - b.X, a.Y - b.Y);
+
+        public static Vector2D operator *(Vector2D a, float b)
+            => new Vector2D(a.X * b, a.Y * b);
 
         public static Vector2D operator /(Vector2D a, float b)
             => new Vector2D(a.X / b, a.Y / b);
