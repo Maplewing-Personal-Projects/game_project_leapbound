@@ -8,7 +8,7 @@ namespace Maplewing.LeapBound.Engine
 {
     public class ItemManager
     {
-        private const float ITEM_DISTANCE = 10f;
+        private const float ITEM_DISTANCE = 15f;
         private const float ITEM_DISAPPEAR_DISTANCE = 100f;
         private const float MIN_ITEM_Y = 0f;
         private const float MAX_ITEM_Y = 2f;
