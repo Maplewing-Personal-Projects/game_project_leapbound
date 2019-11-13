@@ -1,4 +1,6 @@
-﻿namespace Maplewing.LeapBound.Engine.Data
+﻿using System;
+
+namespace Maplewing.LeapBound.Engine.Data
 {
     public class Vector2D
     {
@@ -13,6 +15,8 @@
             Y = y;
         }
 
+        public float Magnitude { get => (float)Math.Sqrt(X * X + Y * Y); }
+
         public static Vector2D operator +(Vector2D a, Vector2D b)
             => new Vector2D(a.X + b.X, a.Y + b.Y);
 
@@ -24,5 +28,9 @@
 
         public static Vector2D operator /(Vector2D a, float b)
             => new Vector2D(a.X / b, a.Y / b);
+
+
+        public Vector2D Normalized()
+            => this / Magnitude;
     }
 }
