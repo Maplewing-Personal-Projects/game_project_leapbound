@@ -12,6 +12,7 @@ namespace Maplewing.LeapBound.Engine
         int IEnemy.HP { get => _hp; }
         int IEnemy.Atk { get; } = 10;
         Rectangle IEnemy.AreaRange { get => _areaRange; }
+        int IEnemy.Score { get; } = 100;
 
         private Rectangle _areaRange;
         private int _hp;

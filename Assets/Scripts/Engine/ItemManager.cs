@@ -9,7 +9,6 @@ namespace Maplewing.LeapBound.Engine
     public class ItemManager
     {
         private const float ITEM_DISTANCE = 15f;
-        private const float ITEM_DISAPPEAR_DISTANCE = 100f;
         private const float MIN_ITEM_Y = 0f;
         private const float MAX_ITEM_Y = 2f;
         private float _initialItemPositionX;
@@ -18,18 +17,19 @@ namespace Maplewing.LeapBound.Engine
         public ItemManager(float initialItemPositionX)
             => _initialItemPositionX = initialItemPositionX;
 
-        public GamePlayEngine.State UpdateState(GamePlayEngine.State currentState)
+        public GamePlayEngine.State UpdateState(GamePlayEngine.State currentState, float deltaTime)
         {
             var items = currentState.Items;
             var state = currentState;
+            var playerMoveRange = GamePlayEngine.GetMoveRange(state.Player.Move(-deltaTime).AreaRange, state.Player.AreaRange);
             var remainItems = new List<IItem>();
             foreach (var item in items)
             {
-                if (item.AreaRange.IsIntersect(state.Player.AreaRange))
+                if (item.AreaRange.IsIntersect(playerMoveRange))
                 {
                     state = item.Get(state);
                 }
-                else if(item.AreaRange.Position.X > currentState.Player.AreaRange.Position.X - ITEM_DISAPPEAR_DISTANCE)
+                else if(item.AreaRange.Position.X >= state.PlayRange.LeftTopPoint.X)
                 {
                     remainItems.Add(item);
                 }

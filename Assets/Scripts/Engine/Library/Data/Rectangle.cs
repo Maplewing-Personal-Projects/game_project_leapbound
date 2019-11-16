@@ -7,6 +7,9 @@ namespace Maplewing.LeapBound.Engine.Data
         public Vector2D Position;
         public Vector2D Size;
 
+        public Vector2D LeftTopPoint { get => new Vector2D(Position.X - Size.X, Position.Y + Size.Y); }
+        public Vector2D RightBottomPoint { get => new Vector2D(Position.X + Size.X, Position.Y - Size.Y); }
+
         public Rectangle(Vector2D position, Vector2D size)
         {
             Position = position;

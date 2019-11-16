@@ -9,6 +9,8 @@ namespace Maplewing.LeapBound.Engine
         int Atk { get; }
         Rectangle AreaRange { get; }
 
+        int Score { get; }
+
         IEnemy BeInjured(int enemyAtk);
         bool IsDead();
     }

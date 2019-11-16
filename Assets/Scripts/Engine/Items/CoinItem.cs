@@ -5,8 +5,7 @@ namespace Maplewing.LeapBound.Engine
 {
     public class CoinItem : IItem
     {
-        private const int MAX_MONEY_VALUE = 300;
-        private const int MIN_MONEY_VALUE = 100;
+        private const int SCORE_VALUE = 10;
 
         private Rectangle _areaRange;
 
@@ -15,8 +14,8 @@ namespace Maplewing.LeapBound.Engine
 
         GamePlayEngine.State IItem.Get(GamePlayEngine.State currentState)
             => currentState.With(
-                state => state.Money,
-                currentState.Money + RandomValue.GetInt(MIN_MONEY_VALUE, MAX_MONEY_VALUE));
+                state => state.Score,
+                currentState.Score + SCORE_VALUE);
 
 
         public CoinItem(Vector2D position)

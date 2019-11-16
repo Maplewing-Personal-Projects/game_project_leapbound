@@ -13,6 +13,7 @@ namespace Maplewing.LeapBound.Unity.GamePlay
     public class GamePlayScene : MonoBehaviour
     {
         private const float PLAYER_POSITION_X = -4f;
+        private static readonly Vector2D PLAYER_ACCELERATION = new Vector2D(1.5f, 0f);
         private const string PLAYER_IDLE_ANIMATOR_STATE = "Idle";
         private const string PLAYER_INVISIBLE_ANIMATOR_STATE = "Invisible";
         private const string PLAYER_DEAD_ANIMATOR_STATE = "Dead";
@@ -47,8 +48,10 @@ namespace Maplewing.LeapBound.Unity.GamePlay
                 var gamePlayEngine = new GamePlayEngine(
                     new GamePlayEngine.State
                     {
-                        Player = new Player(Vector2D.ZERO),
-                        Money = 0,
+                        Player = new Player(
+                            position: Vector2D.ZERO,
+                            acceleration: PLAYER_ACCELERATION),
+                        Score = 0,
                         Items = new IItem[0],
                         Enemies = new IEnemy[0]
                     });
@@ -56,7 +59,7 @@ namespace Maplewing.LeapBound.Unity.GamePlay
 
                 if (_bestScoreText != null)
                 {
-                    _bestScore = Math.Max(_bestScore, gamePlayEngine.CurrentState.Money);
+                    _bestScore = Math.Max(_bestScore, gamePlayEngine.CurrentState.Score);
                     _bestScoreText.text = "Best Score: " + _bestScore;
                 }
 
@@ -86,7 +89,7 @@ namespace Maplewing.LeapBound.Unity.GamePlay
 
         private void _UpdateViews(GamePlayEngine.State state)
         {
-            if (_moneyText != null) _moneyText.text = "Money: " + state.Money.ToString();
+            if (_moneyText != null) _moneyText.text = "Score: " + state.Score.ToString();
             if (_hpText != null) _hpText.text = "HP: " + state.Player.HP.ToString() + " / " + state.Player.MaxHP.ToString();
 
             if(state.Player.IsDead() &&

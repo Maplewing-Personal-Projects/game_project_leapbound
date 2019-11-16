@@ -15,6 +15,6 @@ namespace Maplewing.LeapBound.Engine
         Rectangle AreaRange { get; }
         TargetType Target { get; }
 
-        SwordBullet Move(float deltaTime);
+        IBullet Move(float deltaTime);
     }
 }

@@ -21,11 +21,13 @@ namespace Maplewing.LeapBound.Engine
         public int MaxHP { get; } = INIT_HP;
 
         private Vector2D _currentSpeed;
+        private Vector2D _acceleration;
         private float _invisibleTime = 0f;
 
         public Player(
             Vector2D position, 
             Vector2D speed = null, 
+            Vector2D acceleration = null,
             int hp = INIT_HP,
             float invisibleTime = 0f)
         {
@@ -35,6 +37,7 @@ namespace Maplewing.LeapBound.Engine
             HP = hp;
             _invisibleTime = invisibleTime;
             _currentSpeed = speed ?? INIT_SPEED;
+            _acceleration = acceleration ?? Vector2D.ZERO;
         }
 
         public Player Move(float deltaTime)
@@ -47,13 +50,15 @@ namespace Maplewing.LeapBound.Engine
                 return new Player(
                     new Vector2D(AreaRange.Position.X + _currentSpeed.X * deltaTime, GROUND_Y),
                     new Vector2D(_currentSpeed.X, 0f),
+                    _acceleration,
                     HP,
                     nextInvisibleTime);
             }
             
             return new Player(
                 AreaRange.Position + _currentSpeed * deltaTime,
-                _currentSpeed - new Vector2D(0f, GRAVITY_SPEED) * deltaTime,
+                _currentSpeed - new Vector2D(0f, GRAVITY_SPEED) * deltaTime + _acceleration * deltaTime,
+                _acceleration,
                 HP,
                 nextInvisibleTime);
         }
@@ -61,15 +66,15 @@ namespace Maplewing.LeapBound.Engine
         public Player Jump()
             => _IsInAirState() ?
                 this :
-                new Player(AreaRange.Position, new Vector2D(_currentSpeed.X, JUMP_SPEED), HP, _invisibleTime);
+                new Player(AreaRange.Position, new Vector2D(_currentSpeed.X, JUMP_SPEED), _acceleration, HP, _invisibleTime);
 
         public Player BeInjured(int enemyAtk)
             => IsInvisible() ?
                 this :
-                new Player(AreaRange.Position, _currentSpeed, HP - enemyAtk, INIT_INVISIBLE_TIME);
+                new Player(AreaRange.Position, _currentSpeed, _acceleration, HP - enemyAtk, INIT_INVISIBLE_TIME);
 
         public SwordBullet Attack()
-            => new SwordBullet(AreaRange.Position, new Vector2D(1, 0), TargetType.Enemy);
+            => new SwordBullet(AreaRange.Position, new Vector2D(_currentSpeed.X + 20f, 0f), _acceleration, TargetType.Enemy);
         
         public bool IsDead()
             => HP <= 0f;
